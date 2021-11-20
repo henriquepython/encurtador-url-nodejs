@@ -15,31 +15,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.URLController = void 0;
 const Constants_1 = require("../config/Constants");
 const shortid_1 = __importDefault(require("shortid"));
+const URL_1 = require("database/model/URL");
 class URLController {
     shorten(req, response) {
         return __awaiter(this, void 0, void 0, function* () {
             //ver se URL já não existe
-            //Criar o hash pra esse URL
             const { originURL } = req.body;
+            const url = yield URL_1.URLModel.findOne({ originURL });
+            if (url) {
+                response.json(url);
+                return;
+            }
             const hash = shortid_1.default.generate();
             const shortURL = `${Constants_1.config.API_URL}/${hash}`;
-            //Salvar a Url no banco
-            //Retornar a URL que salvou
-            response.json({ originURL, hash, shortURL });
+            const newURL = yield URL_1.URLModel.create({ hash, shortURL, originURL });
+            response.json(newURL);
         });
     }
     redirect(req, response) {
         return __awaiter(this, void 0, void 0, function* () {
-            //Pegar hash da url
             const { hash } = req.params;
-            //Encontrar a URL  original pelo hash
-            const url = {
-                originURL: 'https://cloud.mongodb.com/v2/6192658cec4b022578f0c66d#clusters/connect?clusterId=Cluster0',
-                hash: 'jdF5ppaTF',
-                shortURL: 'localhost:5000/jdF5ppaTF',
-            };
-            //Redirecionar para a URL original a partir do encontrado no DB
-            response.redirect(url.originURL);
+            const url = yield URL_1.URLModel.findOne({ hash });
+            if (url) {
+                response.redirect(url.originURL);
+                return;
+            }
+            response.status(400).json({ error: 'URL not found' });
         });
     }
 }
