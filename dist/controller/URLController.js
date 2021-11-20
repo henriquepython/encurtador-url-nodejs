@@ -28,5 +28,19 @@ class URLController {
             response.json({ originURL, hash, shortURL });
         });
     }
+    redirect(req, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //Pegar hash da url
+            const { hash } = req.params;
+            //Encontrar a URL  original pelo hash
+            const url = {
+                originURL: 'mongodb+srv://root:<password>@cluster0.2mt7u.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+                hash: 'jdF5ppaTF',
+                shortURL: 'localhost:5000/jdF5ppaTF',
+            };
+            //Redirecionar para a URL original a partir do encontrado no DB
+            response.redirect(url.originURL);
+        });
+    }
 }
 exports.URLController = URLController;

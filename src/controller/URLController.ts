@@ -15,4 +15,18 @@ export class URLController {
         //Retornar a URL que salvou
         response.json({ originURL, hash, shortURL})
     }
+
+    public async redirect(req: Request, response: Response): Promise<void> {
+        //Pegar hash da url
+        const { hash } = req.params
+        //Encontrar a URL  original pelo hash
+        const url = {   
+            originURL: 'mongodb+srv://root:<password>@cluster0.2mt7u.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+            hash: 'jdF5ppaTF',
+            shortURL: 'localhost:5000/jdF5ppaTF',
+         }
+
+        //Redirecionar para a URL original a partir do encontrado no DB
+         response.redirect(url.originURL)
+    }
 }
