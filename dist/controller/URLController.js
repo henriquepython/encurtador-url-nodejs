@@ -34,7 +34,7 @@ class URLController {
             const { hash } = req.params;
             //Encontrar a URL  original pelo hash
             const url = {
-                originURL: 'mongodb+srv://root:<password>@cluster0.2mt7u.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+                originURL: 'https://cloud.mongodb.com/v2/6192658cec4b022578f0c66d#clusters/connect?clusterId=Cluster0',
                 hash: 'jdF5ppaTF',
                 shortURL: 'localhost:5000/jdF5ppaTF',
             };
